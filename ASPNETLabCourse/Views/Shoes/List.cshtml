@@ -1,0 +1,23 @@
+﻿@using ASPNETLabCourse.Models
+@model IEnumerable<Shoes>
+@{
+ Layout = null;
+}
+<!doctype html>
+<html>
+<head>
+ <meta name="viewport" content="width-device-width"/>
+ <title>List</title>
+</head>
+<body>
+ <h2>Все взуття</h2>
+ @{ 
+ foreach (var shoes in Model){
+ <div>
+ <h2>Модель: @shoes.Name</h2>
+ <p>Ціна: @shoes.Price.ToString("c")</p>
+ </div>
+ }
+ }
+</body>
+</html>
