@@ -7,5 +7,6 @@ namespace ASPNETLabCourse.Interfaces
     {
         IEnumerable<Shoes> GetShoes { get; }
         Shoes GetShoesById (int Id);
+        IEnumerable<Shoes> GetShoesByCategory (string Category);
     }
 }

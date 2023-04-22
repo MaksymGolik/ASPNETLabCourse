@@ -42,5 +42,10 @@ namespace ASPNETLabCourse.Mocks
         {
             return _shoes.Find(x => x.Id == Id);
         }
+
+        public IEnumerable<Shoes> GetShoesByCategory(string Category)
+        {
+            return _shoes.FindAll(x => x.Category.Name.Equals(Category));
+        }
     }
 }

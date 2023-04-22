@@ -1,9 +1,11 @@
 ﻿using ASPNETLabCourse.Interfaces;
+using ASPNETLabCourse.ViewModels;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ASPNETLabCourse.Controllers
 {
+    [Route("Shoes")]
     public class ShoesController : Controller
     {
         private readonly IAllShoes _allShoes;
@@ -15,9 +17,22 @@ namespace ASPNETLabCourse.Controllers
             _shoesCategory = shoesCategory;
         }
 
-        public ViewResult List()
+        [HttpGet("List")]
+        public ViewResult List(string category)
         {
-            return View(_allShoes.GetShoes);
+            if (!string.IsNullOrEmpty(category))
+            {
+                return View(new ShoesListViewModel()
+                {
+                    allShoes = _allShoes.GetShoesByCategory(category),
+                    currentCategory = category
+                }) ;
+            }
+            return View(new ShoesListViewModel()
+            {
+                allShoes = _allShoes.GetShoes,
+                currentCategory = "Все взуття"
+            }) ;
         }
     }
 }
