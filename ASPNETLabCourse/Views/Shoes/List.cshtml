@@ -1,18 +1,25 @@
 ﻿<!doctype html>
 <html>
 <head>
- <meta name="viewport" content="width-device-width"/>
+ <meta name="viewport" content="width=device-width"/>
  <title>List</title>
 </head>
 <body>
- <h2>@Model.currentCategory</h2>
- @{ 
- foreach (var shoes in Model.allShoes){
- <div>
- <h2>Модель: @shoes.Name</h2>
- <p>Ціна: @shoes.Price.ToString("c")</p>
- </div>
- }
- }
+	<div class="container-fluid">
+		<h2 class="text-center my-5 fw-bold">@Model.currentCategory</h2>
+		<div class="row row-cols-1 row-cols-md-2 g-4">
+			@foreach (var shoes in Model.allShoes){
+				<div class="col">
+					<div class="card h-100">
+						<img src="@shoes.ImageUrl" class="card-img-top w-50 h-auto mx-auto" alt="...">
+						<div class="card-body text-center">
+							<h5 class="card-title"><a class="shoes-link" href="/Shoes/@shoes.Id">@shoes.Name</a></h5>
+							<p class="card-text text-muted">Ціна: @shoes.Price.ToString("c")</p>
+						</div>
+					</div>
+				</div>
+			}
+		</div>
+	</div>
 </body>
 </html>
