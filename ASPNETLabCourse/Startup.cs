@@ -1,32 +1,33 @@
+using ASPNETLabCourse.Database;
 using ASPNETLabCourse.Interfaces;
-using ASPNETLabCourse.Mocks;
+using ASPNETLabCourse.Repositories;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using IHostingEnvironment = Microsoft.AspNetCore.Hosting.IHostingEnvironment;
 
 namespace ASPNETLabCourse
 {
     public class Startup
     {
-        public Startup(IConfiguration configuration)
-        {
-            Configuration = configuration;
-        }
+        private IConfigurationRoot _confString;
 
-        public IConfiguration Configuration { get; }
+        public Startup(IHostingEnvironment hostingEnvironment)
+        {
+            _confString = new ConfigurationBuilder().SetBasePath(hostingEnvironment.ContentRootPath)
+                .AddJsonFile("dbsetting.json").Build();
+        }
 
         public void ConfigureServices(IServiceCollection services)
         {
+            string conn = _confString.GetConnectionString("DefaultConnection");
+            services.AddDbContext<AppDbContent>(options => options.UseMySql(conn, ServerVersion.AutoDetect(conn)));
             services.AddControllersWithViews();
-            services.AddTransient<IShoesCategory, MockCategory>();
-            services.AddTransient<IAllShoes, MockShoes>();
+            services.AddTransient<IShoesCategory, CategoryRepository>();
+            services.AddTransient<IAllShoes, ShoesRepository>();
             services.AddMvc(mvcOptions => {
                 mvcOptions.EnableEndpointRouting = false;
              });
@@ -67,6 +68,13 @@ namespace ASPNETLabCourse
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");
             });
+
+            using (var scope = app.ApplicationServices.CreateScope())
+            {
+                AppDbContent content = scope.ServiceProvider.GetRequiredService<AppDbContent>();
+                //content.Database.Migrate();
+                DbObjects.Initial(content);
+            }
         }
     }
 }
