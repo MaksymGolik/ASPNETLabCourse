@@ -1,12 +1,40 @@
 ﻿@model ShopCartViewModel
+
 <div class="container">
- @foreach (var el in Model.shopCart.ShopCartItems){
- <div class="alert-warning mt-3">
- <b>Взуття:</b> @el.Shoes.Name<br/>
- <b>Кількість:</b> @el.Quantity<br/>
- <b>Ціна:</b> @el.Price.ToString("c")
- </div>
- }
- <hr/>
- <div class="btn btn-danger" asp-controller="Order">Сплатити</div>
+    @foreach (var el in Model.shopCart.ShopCartItems)
+    {
+        <div class="alert alert-warning mt-3">
+            <b>Взуття:</b> @el.Shoes.Name<br/>
+            <b>Кількість:</b> @el.Quantity<br/>
+            <b>Ціна:</b> @el.Price.ToString("c")
+        </div>
+    }
+
+    @{
+        decimal totalPrice = Model.shopCart.ShopCartItems.Sum(item => item.Price);
+    }
+
+    <div class="alert alert-success mt-3">
+        <b>Загальна ціна:</b> @totalPrice.ToString("c")
+    </div>
+
+    <div class="text-center"> <!-- Wrap the button in a div with text-center class -->
+        <a class="btn btn-danger m-5" asp-controller="Order" asp-action="Checkout">Сплатити</a>
+    </div>
 </div>
+
+<style>
+    /* Custom CSS styles */
+    .container {
+        max-width: 600px;
+        margin: 0 auto;
+    }
+
+    .mt-3 {
+        margin-top: 1rem;
+    }
+
+    .m-5 {
+        margin: 1.25rem;
+    }
+</style>

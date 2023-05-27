@@ -23,14 +23,19 @@ namespace ASPNETLabCourse.Repositories
             order.OrderPrice = shopCart.GetShopCartItems().Sum(it => it.Price);
             appDbContent.Order.Add(order);
             appDbContent.SaveChanges();
-            appDbContent.OrderDetail.AddRange(shopCart.ShopCartItems
-                .Select(shoes => new OrderDetail
+            var items = shopCart.ShopCartItems;
+            foreach (var el in items)
+            {
+                var orderDetail = new OrderDetail()
                 {
+                    ShoesId = el.Shoes.Id,
                     OrderId = order.Id,
-                    ShoesId = shoes.Id,
-                    Price = shoes.Price,
-                    Quantity = shoes.Quantity,
-                }));
+                    Price = el.Price,
+                    Quantity = el.Quantity
+                };
+                appDbContent.OrderDetail.Add(orderDetail);
+            }
+
             appDbContent.SaveChanges();
         }
 
