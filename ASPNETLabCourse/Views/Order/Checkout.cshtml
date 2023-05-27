@@ -1,42 +1,39 @@
 ﻿@model Order
-<div class="row">
-    <h3>Оформлення замовлення на придбання взуття</h3>
-    <form asp-action="Checkout" method="post" class="form-horizontal">
-        <div class="form-group">
-            <label asp-for="FirstName"></label>
-            <div class="col-md-5">
-                <input asp-for="FirstName" class="form-control" />
-                <span asp-validation-for="FirstName" class="text-danger"></span>
-            </div>
+
+<div class="container">
+    <div class="row">
+        <div class="col-12">
+            <h2 class="text-center my-5 fw-bold">Оформлення замовлення на придбання взуття</h2>
+            <form asp-action="Checkout" method="post" class="row g-3">
+                <div class="col-md-6">
+                    <label for="FirstName" class="form-label">Ім'я</label>
+                    <input asp-for="FirstName" class="form-control" id="FirstName" required />
+                    <span asp-validation-for="FirstName" class="text-danger"></span>
+                </div>
+                <div class="col-md-6">
+                    <label for="LastName" class="form-label">Прізвище</label>
+                    <input asp-for="LastName" class="form-control" id="LastName" required />
+                    <span asp-validation-for="LastName" class="text-danger"></span>
+                </div>
+                <div class="col-md-6">
+                    <label for="Phone" class="form-label">Телефон</label>
+                    <input asp-for="Phone" class="form-control" id="Phone" required />
+                    <span asp-validation-for="Phone" class="text-danger"></span>
+                </div>
+                <div class="col-md-6">
+                    <label for="Email" class="form-label">Електронна пошта</label>
+                    <input asp-for="Email" class="form-control" id="Email" required />
+                    <span asp-validation-for="Email" class="text-danger"></span>
+                </div>
+                <div class="col-12">
+                    <label for="Address" class="form-label">Адреса</label>
+                    <input asp-for="Address" class="form-control" id="Address" required />
+                    <span asp-validation-for="Address" class="text-danger"></span>
+                </div>
+                <div class="col-12">
+                    <button class="btn btn-success" type="submit">Завершити замовлення</button>
+                </div>
+            </form>
         </div>
-        <div class="form-group">
-            <label asp-for="LastName"></label>
-            <div class="col-md-5">
-                <input asp-for="LastName" class="form-control" />
-                <span asp-validation-for="LastName" class="text-danger"></span>
-            </div>
-        </div>
-        <div class="form-group">
-            <label asp-for="Phone"></label>
-            <div class="col-md-5">
-                <input asp-for="Phone" class="form-control" />
-                <span asp-validation-for="Phone" class="text-danger"></span>
-            </div>
-        </div>
-        <div class="form-group">
-            <label asp-for="Email"></label>
-            <div class="col-md-5">
-                <input asp-for="Email" class="form-control" />
-                <span asp-validation-for="Email" class="text-danger"></span>
-            </div>
-        </div>
-        <div class="form-group">
-            <label asp-for="Address"></label>
-            <div class="col-md-5">
-                <input asp-for="Address" class="form-control" />
-                <span asp-validation-for="Address" class="text-danger"></span>
-            </div>
-        </div>
-        <input class="btn btn-success" type="submit" value="Завершити замовлення" />
-    </form>
+    </div>
 </div>
