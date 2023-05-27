@@ -1,8 +1,10 @@
 using ASPNETLabCourse.Database;
 using ASPNETLabCourse.Interfaces;
+using ASPNETLabCourse.Models;
 using ASPNETLabCourse.Repositories;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -25,6 +27,14 @@ namespace ASPNETLabCourse
         {
             string conn = _confString.GetConnectionString("DefaultConnection");
             services.AddDbContext<AppDbContent>(options => options.UseMySql(conn, ServerVersion.AutoDetect(conn)));
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+            services.AddScoped(sp => ShopCart.GetCart(sp));
+            services.AddMvc(mvcOtions =>
+            {
+                mvcOtions.EnableEndpointRouting = false;
+            });
+            services.AddMemoryCache();
+            services.AddSession();
             services.AddControllersWithViews();
             services.AddTransient<IShoesCategory, CategoryRepository>();
             services.AddTransient<IAllShoes, ShoesRepository>();
@@ -35,6 +45,7 @@ namespace ASPNETLabCourse
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+            app.UseSession();
             app.Use(async (context, next) =>
             {
                 if (context.Request.Path == "/")
@@ -72,7 +83,6 @@ namespace ASPNETLabCourse
             using (var scope = app.ApplicationServices.CreateScope())
             {
                 AppDbContent content = scope.ServiceProvider.GetRequiredService<AppDbContent>();
-                //content.Database.Migrate();
                 DbObjects.Initial(content);
             }
         }
