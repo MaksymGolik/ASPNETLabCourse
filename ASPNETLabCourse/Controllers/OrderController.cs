@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace ASPNETLabCourse.Controllers
 {
+    [Route("Order")]
     public class OrderController : Controller
     {
         private readonly IOrder _orders;
@@ -15,12 +16,13 @@ namespace ASPNETLabCourse.Controllers
             _shopCart = shopCart;
         }
 
+        [HttpGet("Checkout")]
         public IActionResult Checkout()
         {
             return View();
         }
 
-        [HttpPost]
+        [HttpPost("Checkout")]
         public IActionResult Checkout(Order order)
         {
             _shopCart.ShopCartItems = _shopCart.GetShopCartItems();
@@ -31,15 +33,28 @@ namespace ASPNETLabCourse.Controllers
             if (ModelState.IsValid)
             {
                 _orders.createOrder(order);
-                return RedirectToAction("Complete");
+                return RedirectToAction("Complete", new { Id = order.Id });
             }
             return View(order);
         }
 
-        public IActionResult Complete()
+        [HttpGet("Complete")]
+        public IActionResult Complete(int Id)
         {
             ViewBag.Message = "Замовлення успішно створено!";
+            ViewBag.OrderId = Id;
             return View();
+        }
+
+        [HttpGet("{id}")]
+        public IActionResult Show(int id)
+        {
+            Order order = _orders.GetOrderById(id);
+            if (order == null)
+            {
+                return NotFound("Order with id: " + id + " not found.");
+            }
+            return View(order);
         }
     }
 }

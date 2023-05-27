@@ -1,6 +1,7 @@
 ﻿using ASPNETLabCourse.Database;
 using ASPNETLabCourse.Interfaces;
 using ASPNETLabCourse.Models;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Linq;
 
@@ -38,6 +39,8 @@ namespace ASPNETLabCourse.Repositories
 
             appDbContent.SaveChanges();
         }
+
+        public Order GetOrderById(int Id) => appDbContent.Order.Include(o => o.OrderDetails).ThenInclude(d => d.Shoes).FirstOrDefault(o => o.Id == Id);
 
     }
 }

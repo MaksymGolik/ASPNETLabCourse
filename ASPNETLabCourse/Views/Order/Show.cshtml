@@ -1,0 +1,71 @@
+﻿<!doctype html>
+<html>
+<head>
+  <meta name="viewport" content="width=device-width"/>
+  <title>Order</title>
+</head>
+<body>
+  <div class="container">
+    <h2 class="text-center my-5 fw-bold">Замовлення #@Model.Id</h2>
+    <div class="row">
+      <div class="col-md-6 offset-md-3">
+        <div class="card">
+          <div class="card-body">
+            <h5 class="card-title">Контактна інформація</h5>
+            <p class="card-text">
+              <b>Ім'я:</b> @Model.FirstName<br>
+              <b>Прізвище:</b> @Model.LastName<br>
+              <b>Телефон:</b> @Model.Phone<br>
+              <b>Email:</b> @Model.Email<br>
+              <b>Адреса:</b> @Model.Address<br>
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row mt-5">
+      <div class="col-md-6 offset-md-3">
+        <div class="card">
+          <div class="card-body">
+            <h5 class="card-title">Деталі замовлення</h5>
+            <table class="table">
+              <thead>
+                <tr>
+                  <th>Назва взуття</th>
+                  <th>Ціна</th>
+                  <th>Кількість</th>
+                </tr>
+              </thead>
+              <tbody>
+                @foreach(var sh in @Model.OrderDetails)
+                {
+                  <tr>
+                    <td>@sh.Shoes.Name</td>
+                    <td>@Math.Round(@sh.Price,2)</td>
+                    <td>@sh.Quantity</td>
+                  </tr>
+                }
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row mt-5">
+      <div class="col-md-6 offset-md-3">
+        <div class="card">
+          <div class="card-body">
+            <h5 class="card-title">Загальна сума замовлення</h5>
+            <p class="card-text">
+              <b>Загальна ціна:</b> @Math.Round(@Model.OrderPrice)
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="spacing-div"></div>
+</body>
+</html>
