@@ -38,6 +38,7 @@ namespace ASPNETLabCourse
             services.AddControllersWithViews();
             services.AddTransient<IShoesCategory, CategoryRepository>();
             services.AddTransient<IAllShoes, ShoesRepository>();
+            services.AddTransient<IOrder, OrderRepository>();
             services.AddMvc(mvcOptions => {
                 mvcOptions.EnableEndpointRouting = false;
              });
