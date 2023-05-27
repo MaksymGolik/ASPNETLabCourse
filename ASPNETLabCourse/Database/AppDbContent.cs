@@ -8,5 +8,6 @@ namespace ASPNETLabCourse.Database
         public AppDbContent (DbContextOptions<AppDbContent> options): base(options) { }
         public DbSet<Shoes> Shoes { get; set; }
         public DbSet<Category> Category { get; set; }
+        public DbSet<ShopCartItem> ShopCartItem { get; set; }
     }
 }
